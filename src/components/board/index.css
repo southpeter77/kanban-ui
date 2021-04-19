@@ -1,0 +1,30 @@
+.column__container{
+    border: 1px solid black;
+    width: 25rem;
+    height: 85%;
+    margin: auto 3pt;
+    border-radius: 5pt;
+    background-color: black;
+    overflow: scroll;
+}
+.column__container p {
+    color: white;
+    text-align: center;
+    margin:10pt
+}
+@media only screen and (max-width: 800px){
+    .column__container{
+        min-width: 95%;
+        height: 20%;
+        margin: auto auto;
+    }
+}
+
+.create__button{
+    background-color: white;
+    color:black;
+    margin-left: 10pt;
+    width: 20pt;
+    font-size: 15pt;
+    border-radius: 30pt;
+}
