@@ -1,1 +1,17 @@
 /* TODO Add site wide styles */
+@import url(https://fonts.googleapis.com/css?family=Walter+Turncoat);
+body {
+    background: url("./background2.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: "Walter Turncoat", cursive !important
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}

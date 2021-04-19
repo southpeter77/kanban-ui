@@ -1,15 +1,25 @@
 import React from 'react';
-import{useSelector} from "react-redux"
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        backgroundColor: "white",
+        opacity: "55%",
+        borderRadius: "25pt",
+        height: "80vh",
+        marginTop: theme.spacing(2),
+        width: "95%",
+    }
+}));
 
 function KanbanBoard() {
-    const stateeee = useSelector(state=>state.user.current_user)
+    const classes = useStyles();
     return (
-        <div>
-            <button
-            onClick={()=>console.log(stateeee)}
-            >click</button>
-            <h1>ssssssssssssssss</h1>
-        </div>
+        <Container maxWidth="xlg" className={classes.container}>
+            <h1>asdf</h1>
+        </Container>
     );
 }
 
