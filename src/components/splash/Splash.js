@@ -37,7 +37,7 @@ function Splash() {
         </div>
             
             <Authentication/>
-            <Typography component="h3" className={classes.subHeadLine2}>Peter Kang's Pensieve Frontend Coding Challenge</Typography>
+
         </>
     );
 }

@@ -3,11 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import {useSelector, useDispatch} from "react-redux"
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
-
+import Assign from "./Assign"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -37,8 +34,6 @@ export default function TaskDetail({title, dateDue, assignee, description, type}
   const handleClose = () => {
     setOpen(false);
   };
-
-
   return (
     <div>
 <Button variant="outlined" size="small" style={{height:"20pt", marginTop:"10%", borderRadius:"10pt"}} onClick={handleOpen}>View</Button>
@@ -56,7 +51,9 @@ export default function TaskDetail({title, dateDue, assignee, description, type}
           <div className={classes.paper}>
             <h2>Title: {title}</h2>
             <h5>Due Date:{dateDue}</h5>
-            <h4>Assignee:{assignee}<IconButton style={{fontSize:"10pt"}}><EmojiPeopleIcon></EmojiPeopleIcon></IconButton></h4>
+            <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <h4>Assignee:{assignee}</h4><Assign title={title} description={description} type={type} close={setOpen}></Assign>
+              </div>
             <h4>Description: {description}</h4>
           </div>
           

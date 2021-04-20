@@ -27,7 +27,6 @@ const logOutUser = () => {
 export const loadCurrentUser = () => async (dispatch) => {
     const userInformation = window.localStorage.getItem(START_WITH_GIVEN_NAME);
     if (userInformation) {
-        console.log(userInformation)
         dispatch(startWithGivenNameLoad(userInformation));
     }
 };
