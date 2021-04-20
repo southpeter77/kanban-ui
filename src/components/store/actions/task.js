@@ -2,6 +2,8 @@ const GET_ALL_TASKS = "GET_ALL_TASKS"
 const UPDATE_ORDER = "UPDATE_ORDER";
 const REMOVE_FROM_SOURCE_LIST= "REMOVE_FROM_SOURCE_LIST"
 const ADD_FROM_DESTINATION_LIST = "ADD_FROM_DESTINATION_LIST"
+const DELETE_TASK = "DELETE_TASK"
+
 const getAllTasks = (data) => {
     return {
         type:GET_ALL_TASKS,
@@ -30,6 +32,12 @@ const addFromDestinationList = (data) => {
     }
 }
 
+const deleteTask = (data) => {
+    return {
+        type:DELETE_TASK,
+        data
+    }
+}
 
 export const createNewTaskThunk = (payload) => async(dispatch) => {
     let response = await fetch("/v1/tasks", {
@@ -70,6 +78,15 @@ export const addFromDestinationListThunk = (payload) => dispatch => {
     dispatch(addFromDestinationList(payload));
 }
 
+export const deletetaskThunk = (payload)=> async(dispatch) => {
+
+    await fetch("/v1/tasks", {
+        method:"DELETE",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload)
+    })
+    dispatch(getAllTasksThunk())
+}
 
 export default function reducer(state={}, action) {
     Object.freeze(state);
@@ -104,6 +121,7 @@ export default function reducer(state={}, action) {
             newData.type = action.data.destination
             newState["allTasks"][action.data.destination].splice(action.data.destinationIndex, 0, newData)
             return newState
+
 
         default:
             return state;

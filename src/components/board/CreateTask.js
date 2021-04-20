@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {useSelector, useDispatch} from "react-redux"
@@ -44,8 +44,7 @@ export default function CreateTask() {
   };
 
   const handleSubmit = () =>{
-    // let today = new Date();
-    // let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + " at " + today.getHours() + ":" + today.getMinutes()
+
     const payload = {
       title, description, assignee: `${firstName} ${lastName}`
     }
@@ -57,7 +56,10 @@ export default function CreateTask() {
 
   return (
     <div>
-<IconButton style={{color:"white"}} onClick={handleOpen}><AddCircleOutlineIcon/></IconButton>
+    <Button
+    onClick={handleOpen}
+    variant="contained"
+    >Create a New Task</Button>
       <Modal
         className={classes.modal}
         open={open}
@@ -70,7 +72,7 @@ export default function CreateTask() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2>Create New Task</h2>
+            <h2>Create a New Task</h2>
             <form>
               <TextField
               required

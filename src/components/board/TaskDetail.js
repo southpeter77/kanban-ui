@@ -3,13 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { IconButton } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {useSelector, useDispatch} from "react-redux"
-import {createNewTaskThunk} from "../store/actions/task"
-import { DepartureBoardSharp } from '@material-ui/icons';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,9 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TaskDetail({title, dateDue, assignee, description}) {
+export default function TaskDetail({title, dateDue, assignee, description, type}) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -60,10 +56,10 @@ export default function TaskDetail({title, dateDue, assignee, description}) {
           <div className={classes.paper}>
             <h2>Title: {title}</h2>
             <h5>Due Date:{dateDue}</h5>
-            <h4>Assignee:{assignee}</h4>
+            <h4>Assignee:{assignee}<IconButton style={{fontSize:"10pt"}}><EmojiPeopleIcon></EmojiPeopleIcon></IconButton></h4>
             <h4>Description: {description}</h4>
-
           </div>
+          
         </Fade>
       </Modal>
     </div>

@@ -1,18 +1,16 @@
 import React from 'react';
 import "./index.css"
-import CreateTask from "./CreateTask"
-import Task from "./Task"
 import { Droppable } from "react-beautiful-dnd";
 import AllTasks from "./AllTasks"
-const Column = ({ tasks, column, index }) => {
+const Column = ({ tasks, column }) => {
   return (
     <div
       className="column__container">
-      <div style={{display:"flex", justifyContent:"center", marginTop:"10pt"}}><p>{column}</p><CreateTask></CreateTask></div>
+      <div style={{display:"flex", justifyContent:"center", marginTop:"10pt"}}><p>{`${column.split("_").join(" ")}`}</p></div>
       <Droppable droppableId={column}>
         {provided => (
           <div
-          style={{minHeight:"100pt"}}
+          style={{minHeight:"100%"}}
           ref={provided.innerRef}
           {...provided.droppableProps}
           >

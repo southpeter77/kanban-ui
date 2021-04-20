@@ -87,6 +87,7 @@ function KanbanBoard() {
                 destinationIndex:source.index,
                 removed:removed[0]
             }
+            console.log(removePayload)
             dispatch(addFromDestinationListThunk(addPayload));
             dispatch(removeFromSourceListThunk(removePayload));
             dispatch(updateTaskStatusThunk(payload));
