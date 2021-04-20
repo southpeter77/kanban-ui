@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from "react-redux"
-import ToDo from "./ToDo";
-import Complete from "./Complete";
-import InProgress from "./InProgress"
-import InReview from "./InReview"
 import { getAllTasksThunk,updateOrderThunk,updateTaskStatusThunk,removeFromSourceListThunk,addFromDestinationListThunk} from "../store/actions/task"
 import { DragDropContext } from "react-beautiful-dnd";
-import { ContactlessOutlined, IsoOutlined } from '@material-ui/icons';
 
 import Column from "./Column"
 
@@ -118,11 +113,6 @@ function KanbanBoard() {
                         </Column>
                     )
                 })}
-
-                {/* <ToDo tasks={allTasks.TO_DO}></ToDo>
-                <InProgress tasks={allTasks.IN_PROGRESS} ></InProgress>
-                <Complete tasks={allTasks.COMPLETE}></Complete>
-                <InReview tasks={allTasks.IN_REVIEW}></InReview> */}
             </Container>
         </DragDropContext>
 
