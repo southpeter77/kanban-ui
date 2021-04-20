@@ -6,10 +6,11 @@ import ToDo from "./ToDo";
 import Complete from "./Complete";
 import InProgress from "./InProgress"
 import InReview from "./InReview"
-import { getAllTasksThunk,updateOrderThunk } from "../store/actions/task"
+import { getAllTasksThunk,updateOrderThunk,updateTaskStatusThunk,removeFromSourceListThunk,addFromDestinationListThunk} from "../store/actions/task"
 import { DragDropContext } from "react-beautiful-dnd";
 import { ContactlessOutlined, IsoOutlined } from '@material-ui/icons';
 
+import Column from "./Column"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,30 +47,55 @@ function KanbanBoard() {
     }, [])  
 
     const onDragEnd = (result) =>{
-
         const {destination, source} = result;
-        if (!destination) return;
+        if (!destination) return;// no destination
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+        //cancel if same location.
 
+        //if same column
         if (destination.droppableId === source.droppableId){
             let state = {...allTasks}
-            let copy = [...allTasks[source.droppableId.split("-")[1]]]
+            let copy = [...allTasks[source.droppableId]]
             let removed = copy[source.index];
             copy[source.index] = copy[destination.index];
             copy[destination.index] = removed
-            state[source.droppableId.split("-")[1]] = copy;
-            console.log(result)
-            dispatch(updateOrderThunk({column:destination.droppableId.split("-")[1] ,newData:state}));
+            state[source.droppableId] = copy;
+            dispatch(updateOrderThunk(state));
             return;
-        }
+        }else {
+            //different column
+            //must update the state and change the type value to back end.
+            let state = {...allTasks}
+            let sourceCopy = [...allTasks[source.droppableId]];
+            let destinationCopy = [...allTasks[destination.droppableId]];
+            let removed = sourceCopy.splice(source.index, 1)
+            destinationCopy.splice(destination.index, 1, removed)
+            state[source.droppableId] = sourceCopy;
+            state[destination.droppableId] = destinationCopy;
+            let newType = "COMPLETE"
+            if (destination.droppableId === "IN_PROGRESS") newType = "IN PROGRESS"
+            if (destination.droppableId === "TO_DO") newType = "TO DO"
+            if (destination.droppableId === "IN_REVIEW") newType = "IN REVIEW"
 
-        // const startingIndex = source.index
-        // const endingIndex = destination.index
-        // const startingColumnCopy = Array.from(allTasks[source.droppableId.split("-")[1]]);
-        // const endingColumnCopy = Array.from(allTasks[destination.droppableId.split("-")[1]]);
-        // let removed = startingColumnCopy.splice(startingIndex, 1);
-        // endingColumnCopy.splice(endingIndex, 0, removed)
-        // dispatch(updateOrderThunk({startingColumnCopy, endingColumnCopy}));
+            let payload = {
+                type:newType,
+                assignee:removed[0].assignee,
+                title:removed[0].title,
+                description:removed[0].description,
+            }
+            let removePayload = {
+                source:source.droppableId,
+                sourceIndex:source.index
+            }
+            let addPayload = {
+                destination:destination.droppableId,
+                destinationIndex:source.index,
+                removed:removed[0]
+            }
+            dispatch(addFromDestinationListThunk(addPayload));
+            dispatch(removeFromSourceListThunk(removePayload));
+            dispatch(updateTaskStatusThunk(payload));
+        }
     }
 
     if (!load) {
@@ -81,10 +107,22 @@ function KanbanBoard() {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Container maxWidth="xl" className={classes.container}>
-                <ToDo tasks={allTasks.TO_DO}></ToDo>
+                {Object.keys(allTasks).map((column, index) =>{
+                    return (
+                        <Column
+                        key={index}
+                        tasks={allTasks[column]}
+                        index={index}
+                        column={column}
+                        >
+                        </Column>
+                    )
+                })}
+
+                {/* <ToDo tasks={allTasks.TO_DO}></ToDo>
                 <InProgress tasks={allTasks.IN_PROGRESS} ></InProgress>
                 <Complete tasks={allTasks.COMPLETE}></Complete>
-                <InReview tasks={allTasks.IN_REVIEW}></InReview>
+                <InReview tasks={allTasks.IN_REVIEW}></InReview> */}
             </Container>
         </DragDropContext>
 

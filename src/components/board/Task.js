@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography"
 import Card from "@material-ui/core/Card";
@@ -31,8 +31,9 @@ const useStyles = makeStyles(theme => ({
 
 const Task = ({ task, index }) => {
     const classes = useStyles();
+    useEffect(()=>{},[task])
     return (
-        <Draggable draggableId={index.toString()} index={index}>
+        <Draggable draggableId={task._id} index={index}>
             {provided=>(
             <Card
             key={index}

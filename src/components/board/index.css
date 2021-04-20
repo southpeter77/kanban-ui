@@ -19,7 +19,8 @@
 .column__container p {
     color: white;
     text-align: center;
-    margin:10pt
+    margin:10pt;
+
 }
 @media only screen and (max-width: 800px){
     .column__container{
