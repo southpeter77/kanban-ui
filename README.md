@@ -1,3 +1,11 @@
+### Kanban Board
+* Let's make your work visible so you can show it to others and keep everyone on the same page
+
+### Technical Stacks
+* React/Redux, React-beautiful-DND, Material-UI
+
+
+
 ### Installation
 
 1. Clone the repo
