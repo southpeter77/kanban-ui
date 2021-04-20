@@ -1,45 +1,68 @@
 import React from 'react';
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography"
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import TaskDetail from "./TaskDetail"
+import { Draggable } from "react-beautiful-dnd";
 
-const useStyles = makeStyles(theme=>({
-    card : {
-        display:"flex",
-        width:"90%",
+
+const useStyles = makeStyles(theme => ({
+    card: {
+        display: "flex",
+        width: "90%",
         height: 100,
         marginBottom: theme.spacing(1),
         margin: "auto auto",
-        
+        '&:hover': {
+            cursor: "pointer"
+        },
     },
-    detail:{
-        display:"flex",
-        flexGrow:1,
-        flexDirection:"column"
+    detail: {
+        display: "flex",
+        flexGrow: 1,
+        flexDirection: "column"
     },
     content: {
-        flex:"1 0 auto"
+
+        marginTop: "-5pt"
     }
 }))
 
-const Task = ({task}) => {
-    const classes=useStyles();
-
+const Task = ({ task, index }) => {
+    const classes = useStyles();
     return (
-        <Card className={classes.card}>
-        <div className={classes.detail}>
-            <CardContent className={classes.content}>
-                <Typography component="h6" variant="h6">Title: {task.title}</Typography>
-                <Typography component="h6" variant="h6">Assignee: {task.assignee}</Typography>
-                <Typography component="subheader" variant="subheader">Description: {task.description}</Typography>
-
-            </CardContent>
-            <div>
-                <Typography></Typography>
+        <Draggable draggableId={index.toString()} index={index}>
+            {provided=>(
+            <Card
+            key={index}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            className={classes.card}>
+            <div className={classes.detail}>
+                <CardContent className={classes.content}>
+                    <Typography component="div" style={{ fontSize: "10pt" }}>Title: {task.title}</Typography>
+                    <Typography component="div" style={{ fontSize: "10pt" }}>Due: {task.dateDue.split('.')[0].split("T").join(",  ")}</Typography>
+                    <Typography component="div" style={{ fontSize: "10pt" }}>Assignee: {task.assignee}</Typography>
+                    <Typography component="div" style={{ fontSize: "10pt" }}>Description: {task.description}</Typography>
+                </CardContent>
+                <div>
+                    <Typography></Typography>
+                </div>
             </div>
-        </div>
-    </Card>
+            <TaskDetail
+                title={task.title}
+                dateDue={task.dateDue.split('.')[0].split("T").join(",  ")}
+                assignee={task.assignee}
+                description={task.description}
+            >View</TaskDetail>
+        </Card>
+            )}
+
+        
+
+        </Draggable>
     );
 }
 

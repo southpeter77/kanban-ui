@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TransitionsModal() {
+export default function CreateTask() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);

@@ -7,7 +7,7 @@ const InReview = () => {
   return (
     <>
       <div className="column__container">
-        <p>InReview</p>
+        <p>In Review</p>
         
       </div>
     </>

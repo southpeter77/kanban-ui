@@ -5,8 +5,17 @@
     margin: auto 3pt;
     border-radius: 5pt;
     background-color: black;
-    overflow: scroll;
+    overflow-y: scroll;
 }
+::-webkit-scrollbar {
+    width: 0;
+}
+
+/* .column__container:hover{
+    overflow: scroll;
+    overflow-x:hidden;
+} */
+
 .column__container p {
     color: white;
     text-align: center;

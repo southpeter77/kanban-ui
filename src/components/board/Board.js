@@ -1,13 +1,16 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import {useSelector, useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import ToDo from "./ToDo";
 import Complete from "./Complete";
 import InProgress from "./InProgress"
 import InReview from "./InReview"
-import {getAllTasksThunk} from "../store/actions/task"
+import { getAllTasksThunk,updateOrderThunk } from "../store/actions/task"
+import { DragDropContext } from "react-beautiful-dnd";
+import { ContactlessOutlined, IsoOutlined } from '@material-ui/icons';
+
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -18,47 +21,74 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         width: "95%",
         display: "flex",
-        alignItems:"center",
+        alignItems: "center",
         ["@media (max-width:800px)"]: {
-            flexWrap : "wrap",
+            flexWrap: "wrap",
             minHeight: "100vh"
         }
     }
 }));
 
-const initialData = {
-    tasks: {
-        'task-1': {id: 'task-1', content: 'Take out the garbage'},
-        'task-2': {id: 'task-2', content: 'Take out the garbage2'},
-        'task-3': {id: 'task-3', content: 'Take out the garbage3'},
-        'task-4': {id: 'task-4', content: 'Take out the garbage4'},
-    }
-}
+
 
 function KanbanBoard() {
     const classes = useStyles();
-    const allTasks = useSelector(state=>state.tasks.allTasks)
-    const [tasks, setTasks] = useState(initialData)
+    const allTasks = useSelector(state => state.tasks.allTasks)
+    // const [tasks, setTasks] = useState('')
     const [load, setLoaded] = useState(false);
     const dispatch = useDispatch();
-    useEffect(()=>{
-        dispatch(getAllTasksThunk());
-        setLoaded(true);
-    }, [])
+
+    useEffect(() => {
+        (async function () {
+            await dispatch(getAllTasksThunk())
+            await setLoaded(true)
+        }())
+    }, [])  
+
+    const onDragEnd = (result) =>{
+
+        const {destination, source} = result;
+        if (!destination) return;
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+        if (destination.droppableId === source.droppableId){
+            let state = {...allTasks}
+            let copy = [...allTasks[source.droppableId.split("-")[1]]]
+            let removed = copy[source.index];
+            copy[source.index] = copy[destination.index];
+            copy[destination.index] = removed
+            state[source.droppableId.split("-")[1]] = copy;
+            console.log(result)
+            dispatch(updateOrderThunk({column:destination.droppableId.split("-")[1] ,newData:state}));
+            return;
+        }
+
+        // const startingIndex = source.index
+        // const endingIndex = destination.index
+        // const startingColumnCopy = Array.from(allTasks[source.droppableId.split("-")[1]]);
+        // const endingColumnCopy = Array.from(allTasks[destination.droppableId.split("-")[1]]);
+        // let removed = startingColumnCopy.splice(startingIndex, 1);
+        // endingColumnCopy.splice(endingIndex, 0, removed)
+        // dispatch(updateOrderThunk({startingColumnCopy, endingColumnCopy}));
+    }
+
     if (!load) {
         return (
-            <Container maxWidth="xlg" className={classes.container}>
-
+            <Container maxWidth="xl" className={classes.container}>
             </Container>
         )
     }
     return (
-        <Container maxWidth="xlg" className={classes.container}>
-            <ToDo tasks={allTasks.TO_DO}></ToDo>
-            <InProgress tasks={allTasks.IN_PROGRESS} ></InProgress>
-            <Complete tasks={allTasks.COMPLETE}></Complete>
-            <InReview tasks={allTasks.IN_REVIEW}></InReview>
-        </Container>
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Container maxWidth="xl" className={classes.container}>
+                <ToDo tasks={allTasks.TO_DO}></ToDo>
+                <InProgress tasks={allTasks.IN_PROGRESS} ></InProgress>
+                <Complete tasks={allTasks.COMPLETE}></Complete>
+                <InReview tasks={allTasks.IN_REVIEW}></InReview>
+            </Container>
+        </DragDropContext>
+
+
     );
 }
 
